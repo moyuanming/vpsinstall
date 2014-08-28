@@ -20,6 +20,7 @@ git config --global user.email "mo_yuan_ming@126.com"
 echo "git clone install "
 git clone https://github.com/moyuanming/vpsinstall.git .vpsinstall
 cd .vpsinstall
+git checkout gh-pages 
 chmod +x *.sh
 
 echo "install zsh"
