@@ -1,47 +1,49 @@
 #/bin/sh!
 
-echo "update System"
-apt-get update
+set -e
 
-echo "install system  Prerequisite"
+if [ ! -n "$ZSH" ]; then
+  ZSH=~/.oh-my-zsh
+fi
 
-echo "install gcc & g++ "
+if [ -d "$ZSH" ]; then
+  echo "\033[0;33mYou already have Oh My Zsh installed.\033[0m You'll need to remove $ZSH if you want to install"
+  exit
+fi
 
-echo y | apt-get install gcc 
-echo y | apt-get install g++
+echo "\033[0;34mCloning Oh My Zsh...\033[0m"
+hash git >/dev/null 2>&1 && /usr/bin/env git clone https://github.com/moyuanming/oh-my-zsh.git $ZSH || {
+  echo "git not installed"
+  exit
+}
 
-echo "install && config git "
+echo "\033[0;34mLooking for an existing zsh config...\033[0m"
+if [ -f ~/.zshrc ] || [ -h ~/.zshrc ]; then
+  echo "\033[0;33mFound ~/.zshrc.\033[0m \033[0;32mBacking up to ~/.zshrc.pre-oh-my-zsh\033[0m";
+  mv ~/.zshrc ~/.zshrc.pre-oh-my-zsh;
+fi
 
-echo y | apt-get install git 
-git config --global user.name "moyuanming"
-git config --global user.email "mo_yuan_ming@126.com"
+echo "\033[0;34mUsing the Oh My Zsh template file and adding it to ~/.zshrc\033[0m"
+cp $ZSH/templates/zshrc.zsh-template ~/.zshrc
+sed -i -e "/^ZSH=/ c\\
+ZSH=$ZSH
+" ~/.zshrc
 
+echo "\033[0;34mCopying your current PATH and adding it to the end of ~/.zshrc for you.\033[0m"
+sed -i -e "/export PATH=/ c\\
+export PATH=\"$PATH\"
+" ~/.zshrc
 
-echo "git clone install "
-git clone https://github.com/moyuanming/vpsinstall.git .vpsinstall
-cd .vpsinstall
-chmod +x *.sh
+echo "\033[0;34mTime to change your default shell to zsh!\033[0m"
+chsh -s `which zsh`
 
-echo "install zsh"
-echo y | apt-get install zsh
-./oh-my-zsh-install.sh
-cd ~/.vpsinstall
- 
-
-
-echo "install ruby "
-./installRuby.sh
-cd ~/.vpsinstall
-
-
-echo "install && config  vim "
-echo y | apt-get install vim
-./vimConfig.sh
-
-cd ~/.vpsinstall
-
-
-#install zsh 
-
-
-
+echo "\033[0;32m"'         __                                     __   '"\033[0m"
+echo "\033[0;32m"'  ____  / /_     ____ ___  __  __   ____  _____/ /_  '"\033[0m"
+echo "\033[0;32m"' / __ \/ __ \   / __ `__ \/ / / /  /_  / / ___/ __ \ '"\033[0m"
+echo "\033[0;32m"'/ /_/ / / / /  / / / / / / /_/ /    / /_(__  ) / / / '"\033[0m"
+echo "\033[0;32m"'\____/_/ /_/  /_/ /_/ /_/\__, /    /___/____/_/ /_/  '"\033[0m"
+echo "\033[0;32m"'                        /____/                       ....is now installed!'"\033[0m"
+echo "\n\n \033[0;32mPlease look over the ~/.zshrc file to select plugins, themes, and options.\033[0m"
+echo "\n\n \033[0;32mp.s. Follow us at http://twitter.com/ohmyzsh.\033[0m"
+/usr/bin/env zsh
+. ~/.zshrc

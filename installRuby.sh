@@ -1,47 +1,17 @@
 #/bin/sh!
+cd ~/
+echo "create ruby "
+mkdir .ruby
+cd ~/.ruby
+echo "download ruby" 
+wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.2.tar.gz
 
-echo "update System"
-apt-get update
+tar xvf ruby-2.1.2.tar.gz
+echo "configure & make & make install"
+cd ruby-2.1.2
+./configure 
+make 
+make install 
 
-echo "install system  Prerequisite"
-
-echo "install gcc & g++ "
-
-echo y | apt-get install gcc 
-echo y | apt-get install g++
-
-echo "install && config git "
-
-echo y | apt-get install git 
-git config --global user.name "moyuanming"
-git config --global user.email "mo_yuan_ming@126.com"
-
-
-echo "git clone install "
-git clone https://github.com/moyuanming/vpsinstall.git .vpsinstall
-cd .vpsinstall
-chmod +x *.sh
-
-echo "install zsh"
-echo y | apt-get install zsh
-./oh-my-zsh-install.sh
-cd ~/.vpsinstall
- 
-
-
-echo "install ruby "
-./installRuby.sh
-cd ~/.vpsinstall
-
-
-echo "install && config  vim "
-echo y | apt-get install vim
-./vimConfig.sh
-
-cd ~/.vpsinstall
-
-
-#install zsh 
-
-
+cd 
 
