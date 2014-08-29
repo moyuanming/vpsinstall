@@ -1,7 +1,8 @@
 #/bin/sh!
 
 echo "update System"
-apt-get update >log
+apt-get update 
+echo y | apt-get upgrade
 
 echo "install system  Prerequisite"
 
@@ -23,24 +24,26 @@ cd .vpsinstall
 git checkout gh-pages 
 chmod +x *.sh
 
-echo "install zsh"
-echo y | apt-get install zsh >>log 
-./oh-my-zsh-install.sh >>log
-cd ~/.vpsinstall
+#install db
+echo y | apt-get install sqlite3
+echo y | apt-get install libsqlite3-dev
  
  echo "install ruby "
-./installRuby.sh >>log
+./installRuby.sh 
 cd ~/.vpsinstall
 
 
 echo "install && config  vim "
 echo y | apt-get install vim >>log 
-./vimConfig.sh >>log 
+./vimConfig.sh 
 
 cd ~/.vpsinstall
 
 
-#install zsh 
+echo "install zsh"
+echo y | apt-get install zsh >>log 
+./oh-my-zsh-install.sh >>log
+cd ~/.vpsinstall
 
 
 
